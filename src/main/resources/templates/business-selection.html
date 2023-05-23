@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Design by foolishdeveloper.com -->
+    <title>Glassmorphism login Form Tutorial in html css</title>
+
+    <link th:href="@{/CSS/bootstrap.min.css}" rel="stylesheet" />
+    <!--Stylesheet-->
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row mt-3">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <div class="col ">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-business="crm" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Home</button>
+                    </li>
+                </div>
+                <div class="col">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-business="ecommerce" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</button>
+                    </li>
+                </div>
+                <div class="col">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-contact-tab" data-business="landing" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+                    </li>
+                </div>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <form th:action="@{/save-business}" method="post" th:object="${business}">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Business Name</label>
+                            <input type="text" name="businessName"  th:field="*{businessName}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your business name">
+                        </div>
+                        <input type="hidden" name="businessType" id="businessType" th:value="crm">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <form th:action="@{/save-business}" method="post" th:object="${business}">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Business Name</label>
+                            <input type="text" name="businessName"  th:field="*{businessName}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your business name">
+                        </div>
+                        <input type="hidden" name="businessType" id="businessType" th:value="ecommerce">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                    <form th:action="@{/save-business}" method="post" th:object="${business}">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Business Name</label>
+                            <input type="text" name="businessName"  th:field="*{businessName}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your business name">
+                        </div>
+                        <input type="hidden" name="businessType" id="businessType" th:value="landing">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/JS/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/JS/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/JS/business.js}"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1295.v395eb_7400005">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2131.vb_9788088fdb_5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2131.vb_9788088fdb_5">
+      <jobProperties/>
+      <triggers/>
+      <parameters>
+        <string>DATABASE_NAME</string>
+        <string>BUSINESS_NAME</string>
+        <string>BUSINESS_TYPE</string>
+      </parameters>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>BUSINESS_TYPE</name>
+          <defaultValue>CRM</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>BUSINESS_NAME</name>
+          <defaultValue>multi-purpose-war</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>DATABASE_NAME</name>
+          <defaultValue>testDB</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@3659.v582dc37621d8">
+    <script>pipeline {
+  agent any
+
+  parameters {
+    string(name: &apos;DATABASE_NAME&apos;, defaultValue: &apos;testDB&apos;)
+    string(name: &apos;BUSINESS_NAME&apos;, defaultValue: &apos;multi-purpose-war&apos;)
+    string(name: &apos;BUSINESS_TYPE&apos;, defaultValue: &apos;CRM&apos;)
+  }
+
+  stages {
+    stage(&apos;Create Database&apos;) {
+      steps {
+        bat &apos;&apos;&apos;
+          mysql -uroot -pzU9DmDdepFb@C3SJ -e&quot;CREATE DATABASE %DATABASE_NAME%&quot;
+        &apos;&apos;&apos;
+      }
+    }
+    stage(&apos;Build&apos;) {
+        steps {
+            // Get some code from a GitHub repository
+            git branch:&apos;main&apos;, url: &apos;https://github.com/wp-ahmed/${BUSINESS_TYPE}.git&apos;
+    
+            // Run Maven on a Unix agent.
+            // bat &quot;mvn -Dmaven.test.failure.ignore=true clean test -DName=$Name&quot;
+    
+            // To run Maven on a Windows agent, use
+            bat &quot;mvn clean install -Ddatabase=$DATABASE_NAME -DBusiness=$BUSINESS_NAME&quot;
+        }
+        // post {
+        //     success {
+        //         archiveArtifacts artifacts : &apos;**/target/*.war&apos;
+        //     }
+        // }
+    }
+    stage(&apos;Deploy to server&apos;) {
+        steps {
+            bat &apos;xcopy /Y /s &quot;C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\te\\target\\%BUSINESS_NAME%.war&quot; &quot;C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps&quot;&apos;
+        }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <authToken>1171d2a6b4dd660671a457a222243f6c23</authToken>
+  <disabled>false</disabled>
+</flow-definition>
